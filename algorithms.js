@@ -16,11 +16,14 @@ export function manhattan(a, b) {
 const key = ({ r, c }) => `${r},${c}`;
 
 function validate(grid, start, goal) {
-  if (!Array.isArray(grid) || !grid.length || !grid[0].length || !grid.every(row => Array.isArray(row) && row.length === grid[0].length)) {
+  if (!Array.isArray(grid) || !grid.length || !Array.isArray(grid[0]) || !grid[0].length || !grid.every(row => Array.isArray(row) && row.length === grid[0].length)) {
     throw new TypeError('Grid must be a nonempty rectangle');
   }
+  if (!grid.every(row => row.every(cell => [EMPTY, WALL, WEIGHT].includes(cell)))) {
+    throw new TypeError('Cells must be EMPTY (0), WALL (1) or WEIGHT (5)');
+  }
   for (const point of [start, goal]) {
-    if (!Number.isInteger(point.r) || !Number.isInteger(point.c) || point.r < 0 || point.c < 0 || point.r >= grid.length || point.c >= grid[0].length || grid[point.r][point.c] === WALL) {
+    if (!point || !Number.isInteger(point.r) || !Number.isInteger(point.c) || point.r < 0 || point.c < 0 || point.r >= grid.length || point.c >= grid[0].length || grid[point.r][point.c] === WALL) {
       throw new RangeError('Start and finish must be on traversable cells');
     }
   }
@@ -37,8 +40,8 @@ function finishResult(goal, start, parents, visitedOrder, grid) {
     }
     path.reverse();
   }
-  const pathCost = path.slice(1).reduce((sum, p) => sum + (grid[p.r][p.c] === WEIGHT ? WEIGHT : 1), 0);
-  return { path, visitedOrder, pathCost, visitedCount: visitedOrder.length, steps: path.length ? path.length - 1 : null };
+  const pathCost = path.length ? path.slice(1).reduce((sum, p) => sum + (grid[p.r][p.c] === WEIGHT ? WEIGHT : 1), 0) : null;
+  return { found: path.length > 0, path, visitedOrder, pathCost, visitedCount: visitedOrder.length, steps: path.length ? path.length - 1 : null };
 }
 
 /** BFS minimises number of steps, *not* total weight. O(V + E). */
@@ -60,32 +63,37 @@ export function bfs(grid, start, goal) {
 
 /** Small binary min-heap, O(log n) push/pop. */
 export class MinHeap {
-  constructor() { this.items = []; }
+  constructor() { this.items = []; this.sequence = 0; }
   get length() { return this.items.length; }
+  // FIFO ties make expansion order deterministic without favouring an algorithm.
+  before(a, b) { return a.item.priority < b.item.priority || (a.item.priority === b.item.priority && a.order < b.order); }
   push(item) {
-    const a = this.items; a.push(item);
+    if (!item || !Number.isFinite(item.priority)) throw new TypeError('Heap priority must be finite');
+    const entry = { item, order: this.sequence++ };
+    const a = this.items;
+    a.push(entry);
     let i = a.length - 1;
     while (i > 0) {
       const parent = (i - 1) >> 1;
-      if (a[parent].priority <= item.priority) break;
+      if (!this.before(entry, a[parent])) break;
       a[i] = a[parent]; i = parent;
     }
-    a[i] = item;
+    a[i] = entry;
   }
   pop() {
     const a = this.items;
     if (!a.length) return undefined;
     const first = a[0], last = a.pop();
-    if (!a.length) return first;
+    if (!a.length) return first.item;
     let i = 0;
     while (2 * i + 1 < a.length) {
       let child = 2 * i + 1;
-      if (child + 1 < a.length && a[child + 1].priority < a[child].priority) child++;
-      if (last.priority <= a[child].priority) break;
+      if (child + 1 < a.length && this.before(a[child + 1], a[child])) child++;
+      if (!this.before(a[child], last)) break;
       a[i] = a[child]; i = child;
     }
     a[i] = last;
-    return first;
+    return first.item;
   }
 }
 
