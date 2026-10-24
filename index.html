@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Visualise BFS, Dijkstra, and A* pathfinding on interactive weighted grids" />
@@ -8,6 +8,7 @@
   <script type="module" src="ui.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#lab-heading">Skip to visualisation</a>
   <div class="layout">
     <aside class="left">
       <a class="brand" href="index.html"><span class="mark">⌁</span><span>path<span>lab</span><small>ALGORITHM STUDIO</small></span></a>
@@ -25,21 +26,96 @@
         <button data-tool="goal" class="tool"><i class="goal-swatch"></i> Finish</button>
         <button data-tool="erase" class="tool"><i class="erase-swatch"></i> Eraser</button>
       </div>
-      <div class="how"><b>How to use</b><p>Choose a tool, then click or drag over the grid. Set the start and finish, add obstacles, and watch the algorithm search.</p></div>
+      <div class="how"><b>How to use</b>
+<p>Choose a tool, then click or drag over the grid. With a keyboard, Tab into the grid, use arrow keys to move, and press Enter or Space to draw. Set the start and finish, add obstacles, and watch the algorithm search.</p>
+</div>
       <div class="aside-footer">MADE FOR CURIOUS ENGINEERS</div>
     </aside>
     <main class="main">
-      <header class="topbar"><div>COMPUTER SCIENCE <span> / </span> INTERACTIVE LAB</div><div class="label-pill"><span class="live-dot"></span> LIVE VISUALISATION</div></header>
+      <header class="topbar">
+<div>COMPUTER SCIENCE <span> / </span> INTERACTIVE LAB</div>
+<div class="label-pill"><span class="live-dot"></span> LIVE VISUALISATION</div>
+</header>
       <div class="main-inner">
-        <div class="heading"><div><div class="eyebrow">✦ EXPLORE THE LOGIC</div><h1>See how <em>algorithms think.</em></h1><p>Turn abstract graph theory into something you can actually see.</p></div><div class="tag">01 / PATHFINDING</div></div>
+        <div class="heading">
+<div>
+<div class="eyebrow">✦ EXPLORE THE LOGIC</div>
+<h1 id="lab-heading" tabindex="-1">See how <em>algorithms think.</em></h1>
+<p>Turn abstract graph theory into something you can actually see.</p>
+</div>
+<div class="tag">01 / PATHFINDING</div>
+</div>
         <section class="lab">
-          <div class="lab-top"><div class="lab-title"><span class="spark">✣</span> VISUALISATION CANVAS</div><div class="legend"><span><i class="dot start-swatch"></i> Start</span><span><i class="dot goal-swatch"></i> Goal</span><span><i class="dot visited-swatch"></i> Explored</span><span><i class="dot path-swatch"></i> Path</span></div></div>
-          <div class="grid-holder"><div id="grid" class="grid" role="grid" aria-label="Pathfinding grid; click cells to edit"></div></div>
-          <div class="lab-footer"><span id="status" role="status" aria-live="polite">Ready. Draw walls, add weights, then run a search.</span><span>4-DIRECTIONAL · WEIGHTED GRID</span></div>
+          <div class="lab-top">
+<div class="lab-title"><span class="spark">✣</span> VISUALISATION CANVAS</div>
+<div class="legend"><span><i class="dot start-swatch"></i> Start</span><span><i class="dot goal-swatch"></i> Goal</span><span><i class="dot visited-swatch"></i> Explored</span><span><i class="dot path-swatch"></i> Path</span>
+</div>
+</div>
+          <p id="grid-help" class="grid-help">Arrow keys move between cells. Enter or Space applies the selected tool. S = start, G = goal, 5 = cost to enter a weighted cell. On small screens, scroll the grid sideways.</p>
+<div class="grid-holder">
+<div id="grid" class="grid" role="grid" aria-label="Pathfinding grid" aria-describedby="grid-help">
+</div>
+</div>
+          <div class="lab-footer"><span id="status" role="status" aria-live="polite">Ready. Draw walls, add weights, then run a search.</span><span>4-DIRECTIONAL · WEIGHTED GRID</span>
+</div>
         </section>
-        <div class="controls"><button id="run" class="run">▶ <span>Visualise algorithm</span></button><button id="random" class="outline">⚄ Random obstacles</button><button id="clear" class="outline">↺ Clear grid</button><label class="speed">ANIMATION SPEED <input type="range" id="speed" min="1" max="10" value="7" aria-label="Animation speed" /><span id="speed-label">7/10</span></label></div>
-        <div class="metrics"><div class="metric"><span>01 / ALGORITHM</span><strong id="algorithm-label">A* Search</strong><small>Selected strategy</small></div><div class="metric"><span>02 / NODES EXPLORED</span><strong id="visited">—</strong><small>Cells expanded</small></div><div class="metric"><span>03 / PATH LENGTH</span><strong id="steps">—</strong><small>Steps to destination</small></div><div class="metric"><span>04 / TOTAL COST</span><strong id="cost">—</strong><small>Weights considered</small></div><div class="metric"><span>05 / COMPUTE TIME</span><strong id="elapsed">—</strong><small>Calculation only</small></div></div>
-        <div class="explain"><div class="book-icon">◇</div><div><h3 id="explain-title">A* Search</h3><p id="explain-copy">A* combines the cost travelled so far with a Manhattan-distance estimate of the remaining journey. With non-negative costs and this admissible heuristic, it finds a minimum-cost path.</p></div></div>
+        <div class="controls" role="group" aria-label="Search playback">
+          <button id="run" class="run">▶ Visualise / restart</button>
+<button id="pause" class="outline" disabled>Resume</button>
+<button id="step" class="outline">Step</button>
+<button id="reset-search" class="outline">Reset search</button>
+<button id="compare" class="outline">Compare all three</button>
+          <label class="speed">ANIMATION SPEED <input type="range" id="speed" min="1" max="10" value="8" aria-label="Animation speed"><span id="speed-label">8/10</span></label>
+<label class="instant">
+<input type="checkbox" id="instant"> Instant result</label>
+        </div>
+        <div class="map-controls" role="group" aria-label="Map generation">
+<label for="seed">Map seed</label>
+<input id="seed" value="2027" maxlength="64" spellcheck="false">
+<button id="maze" class="outline">Generate maze</button>
+<button id="random" class="outline">Random obstacles</button>
+<button id="demo" class="outline">Weighted shortcut</button>
+<button id="clear" class="outline">Clear grid</button>
+</div>
+        <p class="caption"><span id="progress">0 / 0 animation events</span> · Results describe the complete search. Changing the map clears them.</p>
+        <div class="metrics">
+<div class="metric"><span>01 / ALGORITHM</span><strong id="algorithm-label">A* Search</strong><small>Selected strategy</small>
+</div>
+<div class="metric"><span>02 / NODES EXPLORED</span><strong id="visited">—</strong><small>Cells expanded</small>
+</div>
+<div class="metric"><span>03 / PATH LENGTH</span><strong id="steps">—</strong><small>Steps to destination</small>
+</div>
+<div class="metric"><span>04 / TOTAL COST</span><strong id="cost">—</strong><small>Weights considered</small>
+</div>
+<div class="metric"><span>05 / COMPUTE TIME</span><strong id="elapsed">—</strong><small>Calculation only · approximate</small>
+</div>
+</div>
+        <section id="comparison" class="comparison" hidden aria-labelledby="comparison-title">
+<h2 id="comparison-title">Same grid. Different strategies.</h2>
+<p>Each algorithm runs nine times; the table shows median compute time. Tiny timings vary with browser, hardware and warm-up. Compare correctness and expanded cells before speed.</p>
+<div class="comparison-scroll">
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Expanded</th>
+<th>Steps</th>
+<th>Cost</th>
+<th>Median time</th>
+</tr>
+</thead>
+<tbody id="comparison-rows">
+</tbody>
+</table>
+</div>
+</section>
+        <div class="explain">
+<div class="book-icon">◇</div>
+<div>
+<h3 id="explain-title">A* Search</h3>
+<p id="explain-copy">A* combines the cost travelled so far with a Manhattan-distance estimate of the remaining journey. With non-negative costs and this admissible heuristic, it finds a minimum-cost path.</p>
+</div>
+</div>
       </div>
     </main>
   </div>
