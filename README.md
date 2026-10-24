@@ -2,7 +2,11 @@
 
 An interactive JavaScript laboratory for BFS, Dijkstra and A*: edit a weighted grid, reproduce a maze from its seed, and inspect how each search reaches its answer.
 
-**Verification:** 17 Node tests passed locally, including 1,000 seeded maps checked against an independent Bellman–Ford oracle. Browser checks and CI are prepared but not yet verified. See [the verification record](docs/VERIFICATION.md).
+**Verified:** 17 Node tests passed, including 1,000 seeded maps checked against an independent Bellman–Ford oracle. GitHub Actions passes on Node 22/24 and Chromium; desktop/mobile screenshots were visually reviewed. See [the verification record](docs/VERIFICATION.md).
+
+![PathLab weighted grid and algorithm comparison](docs/images/desktop.png)
+
+[Mobile screenshot](docs/images/mobile.png)
 
 ## Explore
 
@@ -45,7 +49,7 @@ python -m playwright install chromium
 python tests/browser_smoke.py
 ```
 
-Ensure `node` is on PATH. The script starts the local server, exercises desktop/mobile interactions and writes screenshots to ignored `browser-artifacts/`. On Linux CI, install Chromium with `--with-deps`. These checks have not yet run in this development environment.
+Ensure `node` is on PATH. The script starts the local server, exercises desktop/mobile interactions and writes screenshots to ignored `browser-artifacts/`. On Linux CI, install Chromium with `--with-deps`. [Verified successful run](https://github.com/Rudransh7/pathlab-pathfinding-visualiser/actions/runs/40079263821).
 
 ## Architecture
 
@@ -65,7 +69,7 @@ See [algorithm guarantees, complexity and trade-offs](docs/ALGORITHMS.md) and [o
 
 ## Testing and deployment
 
-The Node test runner is sufficient; a test framework or frontend build system would add little here. CI is configured for Node 22/24 plus a Chromium smoke job. No green CI result is claimed until it has run.
+The Node test runner is sufficient; a test framework or frontend build system would add little here. CI passes on Node 22/24 plus a Chromium smoke job.
 
 The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Choose **GitHub Actions** as the Pages source in repository settings and run **Publish static demo**. No live demo URL is claimed yet.
 
