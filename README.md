@@ -55,7 +55,7 @@ Ensure `node` is on PATH. The script starts the local server, exercises desktop/
 | `maps.js` | Seeded PRNG, obstacle generation and iterative DFS maze carving |
 | `playback.js` | Pure playback state and event sequence |
 | `ui.js` | Grid input, rendering, controls and comparison metrics |
-| `index.html`, `style.css` | Semantic page structure, focus styles and responsive layout |
+| `index.html`, `styles.css` | Semantic page structure, focus styles and responsive layout |
 | `tests/` | Deterministic tests, independent oracle comparisons and browser smoke script |
 | `scripts/` | Minimal local server and static deployment build |
 
@@ -67,7 +67,7 @@ See [algorithm guarantees, complexity and trade-offs](docs/ALGORITHMS.md) and [o
 
 The Node test runner is sufficient; a test framework or frontend build system would add little here. CI is configured for Node 22/24 plus a Chromium smoke job. No green CI result is claimed until it has run.
 
-The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Once the repository exists, choose **GitHub Actions** as the Pages source in repository settings and run **Deploy PathLab demo** (check the workflow's displayed name). No live demo URL is claimed yet.
+The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Choose **GitHub Actions** as the Pages source in repository settings and run **Publish static demo**. No live demo URL is claimed yet.
 
 ## Limits and provenance
 
