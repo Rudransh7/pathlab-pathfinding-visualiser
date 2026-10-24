@@ -1,54 +1,76 @@
-# PathLab — interactive graph pathfinding laboratory
+# PathLab
 
-A dependency-free interactive visualisation of BFS, Dijkstra's algorithm and A* on a weighted grid. Created as an **AI-assisted learning project**: review the algorithm implementation and extend it yourself before claiming independent authorship in internship applications.
+An interactive JavaScript laboratory for BFS, Dijkstra and A*: edit a weighted grid, reproduce a maze from its seed, and inspect how each search reaches its answer.
 
-## Features
+**Verification:** 17 Node tests passed locally, including 1,000 seeded maps checked against an independent Bellman–Ford oracle. Browser checks and CI are prepared but not yet verified. See [the verification record](docs/VERIFICATION.md).
 
-- Interactive wall, weighted tile, start and finish placement
-- Drag to draw obstacles; random map generation and reset
-- Animated search exploration and shortest path
-- Compare BFS (minimum hops) with Dijkstra and A* (minimum cost)
-- Binary min-heap priority queue instead of repeatedly sorting the frontier
-- Live metrics: number of expanded nodes, path length, path cost and computation time
-- Automated correctness tests, including 20 deterministically randomised maps comparing Dijkstra and A*
-- No frontend frameworks or third-party dependencies required
+## Explore
 
-## Run
+- Draw walls or cost-5 terrain; move the start and goal.
+- Run BFS, Dijkstra or A*, then pause, resume or step through expansions.
+- Adjust playback speed or use instant results; reduced-motion preference starts in instant mode.
+- Compare steps, weighted cost, expanded cells and approximate computation time on the same map.
+- Generate reproducible random obstacles or connected mazes from a text seed.
+- Use the keyboard: Tab enters the grid; arrow keys move focus; Enter/Space applies the selected tool; Home/End moves within a row.
 
-Requires a modern browser. Serve the folder instead of opening `index.html` as a file (ES modules require a web origin):
+BFS finds the fewest steps. It does **not** generally find the cheapest weighted path. Dijkstra and A* minimise total terrain cost. The weighted example makes this difference visible.
+
+## Run locally
+
+Use Node.js 22 or 24 and its bundled npm. There are no runtime or npm dependencies to install.
 
 ```bash
-python3 -m http.server 8001
+npm start
 ```
 
-Open **http://localhost:8001**.
-
-Requires Node.js 20+ for automated tests:
+Open <http://127.0.0.1:8001>. The local server binds to loopback and serves only the app's fixed asset list. ES modules need an HTTP server; opening `index.html` directly from disk is not the documented workflow.
 
 ```bash
 npm test
+npm run check
+npm run build
 ```
 
-## What the algorithms demonstrate
+The build copies the six public assets into `dist/` for static hosting; it does not bundle a backend. `private: true` in package.json prevents accidental npm publication and does not control GitHub visibility.
 
-| Algorithm | Data structure | Finds optimal weighted cost? | Complexity on this grid |
-|---|---|---|---|
-| BFS | Queue | No; minimises steps | O(V + E) |
-| Dijkstra | Binary min-heap | Yes | O((V + E) log V) |
-| A* | Binary min-heap + Manhattan heuristic | Yes, with minimum cell cost 1 | O((V + E) log V) in common heap-based analyses |
+### Optional browser checks
 
-The heuristic never overestimates because movement is cardinal only and each step costs at least 1. BFS ignores tile weights when deciding which path to take, but the UI still reports the actual weighted cost of the route it found. The reported compute time **excludes visualisation delay**.
+Use Python 3.12 or 3.13 in a virtual environment:
 
-## Suggested improvements to implement and explain in interviews
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-browser.txt
+python -m playwright install chromium
+python tests/browser_smoke.py
+```
 
-1. Add bidirectional BFS and compare explored nodes on open grids.
-2. Allow diagonal movement; update heuristics to preserve admissibility.
-3. Add a reproducible seeded map generator and benchmark 1,000 cases.
-4. Add a maze generator (recursive division or randomised Prim).
-5. Use a Web Worker for very large grids and cancellation.
+Ensure `node` is on PATH. The script starts the local server, exercises desktop/mobile interactions and writes screenshots to ignored `browser-artifacts/`. On Linux CI, install Chromium with `--with-deps`. These checks have not yet run in this development environment.
 
-## CV talking points (only after you understand and can demonstrate it)
+## Architecture
 
-- Implemented and compared BFS, Dijkstra and A* pathfinding with weighted grid costs.
-- Used a binary min-heap priority queue and Manhattan heuristic for performant search.
-- Added an interactive visualiser and automated unit and property-style regression tests.
+| File | Responsibility |
+|---|---|
+| `algorithms.js` | Validated graph model, BFS, stable heap, Dijkstra and A* |
+| `maps.js` | Seeded PRNG, obstacle generation and iterative DFS maze carving |
+| `playback.js` | Pure playback state and event sequence |
+| `ui.js` | Grid input, rendering, controls and comparison metrics |
+| `index.html`, `style.css` | Semantic page structure, focus styles and responsive layout |
+| `tests/` | Deterministic tests, independent oracle comparisons and browser smoke script |
+| `scripts/` | Minimal local server and static deployment build |
+
+The search functions do not depend on the DOM. They return `found`, `path`, `visitedOrder`, `visitedCount`, `steps` and `pathCost`. Cost excludes the starting cell; unreachable cost/steps are `null`. This separation makes computation testable independently of animation.
+
+See [algorithm guarantees, complexity and trade-offs](docs/ALGORITHMS.md) and [ownership, interview questions and exercises](docs/OWNERSHIP.md).
+
+## Testing and deployment
+
+The Node test runner is sufficient; a test framework or frontend build system would add little here. CI is configured for Node 22/24 plus a Chromium smoke job. No green CI result is claimed until it has run.
+
+The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Once the repository exists, choose **GitHub Actions** as the Pages source in repository settings and run **Deploy PathLab demo** (check the workflow's displayed name). No live demo URL is claimed yet.
+
+## Limits and provenance
+
+The visual grid is fixed at 19×31 and scrolls horizontally on small screens. Computation is synchronous; it is designed for this small teaching grid. Runtime figures are approximate, not benchmark claims. There are no accounts, analytics, remote data requests or private application records.
+
+This began as an AI-assisted starter with all three algorithms, a heap, a basic grid and eight tests. The subsequent correctness, usability, reproducibility and test improvements were also AI-assisted. Genuine student ownership should be demonstrated through the exercises and accurately recorded personal changes. No contribution history or performance achievement has been fabricated.
