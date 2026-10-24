@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Visualise BFS, Dijkstra, and A* pathfinding on interactive weighted grids" />
+  <title>PathLab — see how algorithms think.</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="ui.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="left">
+      <a class="brand" href="index.html"><span class="mark">⌁</span><span>path<span>lab</span><small>ALGORITHM STUDIO</small></span></a>
+      <div class="section-label">PATHFINDING ENGINE</div>
+      <div class="algorithms" role="group" aria-label="Select algorithm">
+        <button data-alg="bfs" class="alg"><span class="alg-icon">01</span><span><b>Breadth-First Search</b><small>Shortest path by steps</small></span></button>
+        <button data-alg="dijkstra" class="alg"><span class="alg-icon">02</span><span><b>Dijkstra's Algorithm</b><small>Least-cost weighted path</small></span></button>
+        <button data-alg="astar" class="alg active"><span class="alg-icon">03</span><span><b>A* Search</b><small>Heuristic-guided shortest path</small></span></button>
+      </div>
+      <div class="section-label tools-heading">DRAWING TOOLS</div>
+      <div class="tools" role="group" aria-label="Drawing tools">
+        <button data-tool="wall" class="tool active"><i class="wall-swatch"></i> Wall</button>
+        <button data-tool="weight" class="tool"><i class="weight-swatch"></i> Weight ×5</button>
+        <button data-tool="start" class="tool"><i class="start-swatch"></i> Start</button>
+        <button data-tool="goal" class="tool"><i class="goal-swatch"></i> Finish</button>
+        <button data-tool="erase" class="tool"><i class="erase-swatch"></i> Eraser</button>
+      </div>
+      <div class="how"><b>How to use</b><p>Choose a tool, then click or drag over the grid. Set the start and finish, add obstacles, and watch the algorithm search.</p></div>
+      <div class="aside-footer">MADE FOR CURIOUS ENGINEERS</div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div>COMPUTER SCIENCE <span> / </span> INTERACTIVE LAB</div><div class="label-pill"><span class="live-dot"></span> LIVE VISUALISATION</div></header>
+      <div class="main-inner">
+        <div class="heading"><div><div class="eyebrow">✦ EXPLORE THE LOGIC</div><h1>See how <em>algorithms think.</em></h1><p>Turn abstract graph theory into something you can actually see.</p></div><div class="tag">01 / PATHFINDING</div></div>
+        <section class="lab">
+          <div class="lab-top"><div class="lab-title"><span class="spark">✣</span> VISUALISATION CANVAS</div><div class="legend"><span><i class="dot start-swatch"></i> Start</span><span><i class="dot goal-swatch"></i> Goal</span><span><i class="dot visited-swatch"></i> Explored</span><span><i class="dot path-swatch"></i> Path</span></div></div>
+          <div class="grid-holder"><div id="grid" class="grid" role="grid" aria-label="Pathfinding grid; click cells to edit"></div></div>
+          <div class="lab-footer"><span id="status" role="status" aria-live="polite">Ready. Draw walls, add weights, then run a search.</span><span>4-DIRECTIONAL · WEIGHTED GRID</span></div>
+        </section>
+        <div class="controls"><button id="run" class="run">▶ <span>Visualise algorithm</span></button><button id="random" class="outline">⚄ Random obstacles</button><button id="clear" class="outline">↺ Clear grid</button><label class="speed">ANIMATION SPEED <input type="range" id="speed" min="1" max="10" value="7" aria-label="Animation speed" /><span id="speed-label">7/10</span></label></div>
+        <div class="metrics"><div class="metric"><span>01 / ALGORITHM</span><strong id="algorithm-label">A* Search</strong><small>Selected strategy</small></div><div class="metric"><span>02 / NODES EXPLORED</span><strong id="visited">—</strong><small>Cells expanded</small></div><div class="metric"><span>03 / PATH LENGTH</span><strong id="steps">—</strong><small>Steps to destination</small></div><div class="metric"><span>04 / TOTAL COST</span><strong id="cost">—</strong><small>Weights considered</small></div><div class="metric"><span>05 / COMPUTE TIME</span><strong id="elapsed">—</strong><small>Calculation only</small></div></div>
+        <div class="explain"><div class="book-icon">◇</div><div><h3 id="explain-title">A* Search</h3><p id="explain-copy">A* combines the cost travelled so far with a Manhattan-distance estimate of the remaining journey. With non-negative costs and this admissible heuristic, it finds a minimum-cost path.</p></div></div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
