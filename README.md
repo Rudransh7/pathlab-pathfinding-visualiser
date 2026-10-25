@@ -2,6 +2,8 @@
 
 An interactive JavaScript laboratory for BFS, Dijkstra and A*: edit a weighted grid, reproduce a maze from its seed, and inspect how each search reaches its answer.
 
+[**Open the live demo**](https://rudransh7.github.io/pathlab-pathfinding-visualiser/)
+
 **Verified:** 17 Node tests passed, including 1,000 seeded maps checked against an independent Bellman–Ford oracle. GitHub Actions passes on Node 22/24 and Chromium; desktop/mobile screenshots were visually reviewed. See [the verification record](docs/VERIFICATION.md).
 
 ![PathLab weighted grid and algorithm comparison](docs/images/desktop.png)
@@ -71,10 +73,10 @@ See [algorithm guarantees, complexity and trade-offs](docs/ALGORITHMS.md) and [o
 
 The Node test runner is sufficient; a test framework or frontend build system would add little here. CI passes on Node 22/24 plus a Chromium smoke job.
 
-The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Choose **GitHub Actions** as the Pages source in repository settings and run **Publish static demo**. No live demo URL is claimed yet.
+The Pages workflow is manually triggered and only deploys `main` after tests, syntax checks and build. Choose **GitHub Actions** as the Pages source in repository settings and run **Publish static demo**. The [live demo](https://rudransh7.github.io/pathlab-pathfinding-visualiser/) was deployed and browser-checked on 25 October 2026 ([deployment run](https://github.com/Rudransh7/pathlab-pathfinding-visualiser/actions/runs/40154293677)). The weighted example returned BFS: 24 steps / cost 84; Dijkstra and A*: 26 steps / cost 26. These are example results, not general performance guarantees.
 
 ## Limits and provenance
 
 The visual grid is fixed at 19×31 and scrolls horizontally on small screens. Computation is synchronous; it is designed for this small teaching grid. Runtime figures are approximate, not benchmark claims. There are no accounts, analytics, remote data requests or private application records.
 
-This began as an AI-assisted starter with all three algorithms, a heap, a basic grid and eight tests. The subsequent correctness, usability, reproducibility and test improvements were also AI-assisted. Genuine student ownership should be demonstrated through the exercises and accurately recorded personal changes. No contribution history or performance achievement has been fabricated.
+The original supplied version already contained all three algorithms, a heap, a basic grid and eight tests. Later correctness, usability, reproducibility and test improvements were developed with AI assistance. The original source is retained in repository history; dated commits document the subsequent review. See the ownership guide for the contribution boundary and personal exercises. No earlier development dates or performance achievements are inferred from the import commit.
