@@ -1,6 +1,6 @@
 # Ownership and interview guide
 
-The AI-assisted starter already implemented BFS, Dijkstra, A*, a heap, a basic interactive grid, weighted terrain, animation and eight tests. This task retained and reviewed those algorithms, strengthened input/result contracts and tie handling, and added seeded maps, controllable playback, keyboard navigation, comparisons and independent randomised correctness checks. The subsequent work was also AI-assisted. No claim of independent student authorship, production traffic or measured speedup is made.
+The original supplied version already implemented BFS, Dijkstra, A*, a heap, a basic interactive grid, weighted terrain, animation and eight tests. This task retained and reviewed those algorithms, strengthened input/result contracts and tie handling, and added seeded maps, controllable playback, keyboard navigation, comparisons and independent randomised correctness checks. The subsequent work was AI-assisted. No claim of independent student authorship, production traffic or measured speedup is made.
 
 ## Explain it in one minute
 
